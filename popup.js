@@ -14,7 +14,6 @@ function readSettings(){
     	if(result["currencies"] == "" || result["currencies"] == null){
 	    	setCurrencies(["USD", "EUR"]);
 	    }else{
-	    	console.log(result["currencies"]);
 	    	setCurrencies(result["currencies"]);
 	    }
     });
@@ -36,11 +35,15 @@ function fetchCurrencies(){
 
 function populateOptions(symbolArray, nameArray){
 	currencySelect = $("select.currency-select");
-	for(i = 0; i < symbolArray.length; i++){
-		$(currencySelect).append("<option value='" + symbolArray[i] + "'>" + nameArray[i] + "</option>");
-	}
+	$(currencySelect).each(function(){
+		console.log($(this).children().length);
+		if($(this).children().length == 1){
+			for(i = 0; i < symbolArray.length; i++){
+				$(this).append("<option value='" + symbolArray[i] + "'>" + nameArray[i] + "</option>");
+			}
+		}
+	});
 	$("select").material_select();
-
 }
 
 $("#currencies").on("change", "select.currency-select", function(){

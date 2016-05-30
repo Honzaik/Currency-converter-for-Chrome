@@ -2,6 +2,7 @@
   "manifest_version": 2,
 
   "name": "Currency converter by Honzaik",
+  "short_name" : "Currency converter",
   "description": "You can easily convert any currency via this extension.",
   "version": "1.0",
 
