@@ -4,7 +4,7 @@
   "name": "Currency converter by Honzaik",
   "short_name" : "Currency converter",
   "description": "You can easily convert any currency via this extension.",
-  "version": "1.0",
+  "version": "1.0.1",
 
   "browser_action": {
     "default_icon": {
