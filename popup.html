@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Currency converter by Honzaik</title>
+	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection">
+	<link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col s12 heading">
+				<h5 class="flow-text">Currency converter by <a class="author" href="https://honzaik.xyz" target="_blank">Honzaik</a></h5>
+			</div>
+		</div>
+		<div class="row info">
+			<div class="col s12 card-panel deep-purple accent-2 white-text">
+				<div class="flow-text">This converter is made using <a href="https://jquery.com/" target="_blank">jQuery</a>, <a href="http://materializecss.com/" target="_blank">Materialize</a> & icon is from <a href="https://glyphicons.com/" target="_blank">Glyphicons</a>. It is using Google currency converter.</div>
+				<div class="flow-text">Source code can be found at <a href="" target="_blank">GitHub</a>.</div>
+			</div>
+		</div>
+		<div class="row loading">
+			<div class="col s12 card-panel deep-purple accent-2 white-text">
+				Loading...
+			</div>
+		</div>
+		<div id="currencies">
+			<div class="row currency-row">
+				<div class="col s5">
+					<input placeholder="Amount" id="" type="number" class="amount">
+				</div>
+				<div class="col s7 currency-cont">
+					<select class="currency-select">
+				    	<option value="none" disabled selected>Choose currency</option>
+				    </select>
+				</div>
+			</div>
+			<div class="row currency-row">
+				<div class="col s5">
+					<input placeholder="Amount" id="" type="number" class="amount">
+				</div>
+				<div class="col s7 currency-cont">
+					<select class="currency-select">
+				    	<option value="none" disabled selected>Choose currency</option>
+				    </select>
+				</div>
+			</div>
+		</div>
+		<div class="row button-row">
+			<div class="col s6">
+				<a id="button-add" class="waves-effect waves-light btn deep-purple accent-2">Another one</a>
+			</div>
+			<div class="col s6">
+				<a id="button-remove" class="waves-effect waves-light btn deep-purple accent-2">Remove</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="jquery-2.2.4.min.js"></script>
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+	<script type="text/javascript" src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+html{
+	width: 600px;
+}
+
+a{
+	color: #f3e5f5;
+}
+
+.heading{
+	text-align: center;
+	cursor: pointer;
+}
+
+.author{
+	color: #673ab7 ;
+	font-weight: bold;
+}
+
+.info{
+	display: none;
+}
+
+.loading{
+	font-size: 3em;
+	text-align: center;
+}
+
+ul.select-dropdown{
+	min-height: 200px;
+}
+
+ul.select-dropdown > li{
+	color: #512da8;
+	min-height: 25px;
+}
+
+ul.select-dropdown > li > span{
+	color: #512da8;
+	font-size: 15px;
+	padding: 5px 10px;
+}
+
+input{
+	color: #512da8;
+}
+
+input.amount{
+	border-color: #512da8;
+}
+input.amount[type=number]:focus {
+     border-bottom: 1px solid #512da8;
+     box-shadow: 0 1px 0 0 #512da8;
+}
+
+.button-row{
+	text-align: center;
+}
+
+.button-row > div > .btn{
+	width: 100%;
+}
+
+.currency-row{
+	margin-bottom: 0px;
+}
