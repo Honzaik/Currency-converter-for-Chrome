@@ -1,18 +1,25 @@
 currencyArray = [];
 currencyNamesArray = [];
+currencyRates = [];
 lastInput = null;
 infoShown = false;
+browserObject = null;
 
 $(document).ready(function() {
+    if(typeof chrome !== 'undefined'){
+      browserObject = chrome;
+    }else{
+      browserObject = browser;
+    }
+    console.log(browserObject);
     fetchCurrencies();
-    
 });
 
 
 function readSettings(){
-	savedCurrencies = chrome.storage.local.get("currencies", function(result){
+	savedCurrencies = browserObject.storage.local.get("currencies", function(result){
     	if(result["currencies"] == "" || result["currencies"] == null){
-	    	setCurrencies(["USD", "EUR"]);
+	    	setCurrencies(["usd", "eur"]);
 	    }else{
 	    	setCurrencies(result["currencies"]);
 	    }
@@ -20,17 +27,69 @@ function readSettings(){
     $(".loading").slideUp(500);
 }
 
+function parseCurrencyName(name){
+  console.log("parsing " + name);
+  var parts = name.split("-");
+  console.log(parts);
+  var parsedName = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+  if(parts.length > 2){
+    parsedName += " " + parts[2].charAt(0).toUpperCase() + parts[2].slice(1);
+  }
+  return parsedName;
+}
+
+function parseCurrencyJSON(currencies){
+  Object.keys(currencies).sort().forEach(function(key) {
+    var value = currencies[key];
+    delete currencies[key];
+    currencies[key] = value;
+  });
+  Object.keys(currencies).forEach(function(short){
+    currencyArray.push(short);
+    currencyNamesArray.push(currencies[short].code + " - " + currencies[short].name);
+    var rates = {
+      rate: parseFloat(currencies[short].rate),
+      inverseRate: parseFloat(currencies[short].inverseRate)
+    };
+    currencyRates[short] = rates;
+  })
+}
+
+function cacheJSON(json){
+  browserObject.storage.local.set({currencyJSON : {
+    ts: Date.now(),
+    currencyJSON: json
+  }});
+}
+
 function fetchCurrencies(){
 	currencyArray = [];
 	currencyNamesArray = [];
-	$.get("https://www.google.com/finance/converter", function(response){
-		currency_options = $(response).find("select").first().children();
-		$(currency_options).each(function(){
-			currencyArray.push(this.value);
-			currencyNamesArray.push($(this).text());
-		});
-		readSettings();
-	});
+  currencyJSON = null;
+  browserObject.storage.local.get("currencyJSON", function(result){
+    resultJSON = result["currencyJSON"];
+    if(resultJSON == "" || resultJSON == null || resultJSON.ts < (Date.now()-12*60*60)){
+      $.ajax({
+        url: "https://floatrates.com/daily/usd.json",
+        dataType: "json",
+        success: function(responseJSON){
+          responseJSON.usd = {
+            code: "USD",
+            rate: 1,
+            inverseRate: 1,
+            name: "United States Dollar",
+          };
+          parseCurrencyJSON(responseJSON);
+          cacheJSON(responseJSON);
+          readSettings();
+        },
+      });
+    }else{
+      console.log("cached");
+      parseCurrencyJSON(resultJSON.currencyJSON);
+      readSettings();
+    }
+  });
 }
 
 function populateOptions(symbolArray, nameArray){
@@ -94,6 +153,8 @@ function recalculate(input){
 		}
 	});
 
+  console.log(currenciesToConvert);
+
 	if(!isNaN(amount) && allCurrenciesSet && amountInputs.length > 1){ // input is a number
 		convertedAmounts = [];
 		currenciesToConvert.forEach(function(symbol){
@@ -105,12 +166,8 @@ function recalculate(input){
 }
 
 function convertCurrency(from, to, amount){
-	url = "https://www.google.com/finance/converter?a=" + amount + "&from=" + from + "&to=" + to;
-	$.get(url, function(response){
-		string = $(response).find(".bld").text();
-		convertedAmount = parseFloat(string.substring(0, string.length - 4));
-		$("input#" + to).val(convertedAmount);
-	});
+  var fromInUSD = amount*currencyRates[from].inverseRate;
+  $("input#" + to).val(fromInUSD*currencyRates[to].rate);
 }
 
 function setCurrencies(array){
@@ -141,7 +198,7 @@ function saveSettings(){
 		}
 	});
 	if(currencies != null && currencies != ''){
-		chrome.storage.local.set({"currencies" : currencies});
+		browserObject.storage.local.set({"currencies" : currencies});
 	}
 	
 }
