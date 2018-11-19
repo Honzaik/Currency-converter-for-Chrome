@@ -102,7 +102,7 @@ function populateOptions(symbolArray, nameArray){
 			}
 		}
 	});
-	$("select").material_select();
+	$("select").formSelect();
 }
 
 $("#currencies").on("change", "select.currency-select", function(){
@@ -133,7 +133,7 @@ $("#button-remove").click(function(){
 	if($("#currencies .currency-row").length > 2){
 		$(".currency-row").last().remove();
 		saveSettings();
-		$("select").material_select();
+		$("select").formSelect();
 	}
 });
 
@@ -145,7 +145,6 @@ function recalculate(input){
 	amount = $(input).val();
 	currency = $(input).attr("id");
 	amountInputs = $("input.amount");
-	allCurrenciesSet = true;
 	currenciesToConvert = [];
 	$(amountInputs).each(function(){
 		if ($(this).attr("id") != currency && $(this).attr("id") != ''){
@@ -155,7 +154,7 @@ function recalculate(input){
 
   console.log(currenciesToConvert);
 
-	if(!isNaN(amount) && allCurrenciesSet && amountInputs.length > 1){ // input is a number
+	if(!isNaN(amount) && currency != '' && amountInputs.length > 1){ // input is a number
 		convertedAmounts = [];
 		currenciesToConvert.forEach(function(symbol){
 			convertCurrency(currency, symbol, amount);
@@ -186,7 +185,7 @@ function setCurrencies(array){
 		$(selects[i]).find("option[value='" + array[i] + "']").prop('selected', true);
 		console.log($(selects[i]).find("option[value='" + array[i] + "']").html());
 	}
-	$("select").material_select();
+	$("select").formSelect();
 }
 
 function saveSettings(){
