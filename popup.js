@@ -98,43 +98,46 @@ function populateOptions(symbolArray, nameArray){
 		console.log($(this).children().length);
 		if($(this).children().length == 1){
 			for(i = 0; i < symbolArray.length; i++){
-				$(this).append("<option value='" + symbolArray[i] + "'>" + nameArray[i] + "</option>");
-			}
-		}
-	});
-	$("select").formSelect();
+        var option = document.createElement('option');
+        option.textContent = nameArray[i];
+        option.value = symbolArray[i];
+        $(this)[0].appendChild(option);
+      }
+    }
+  });
+  $("select").formSelect();
 }
 
 $("#currencies").on("change", "select.currency-select", function(){
-	currencySymbol = $(this).val();
-	input = $(this).parent().parent().prev().children("input.amount");
-	$(input).attr("id", currencySymbol);
-	recalculate(lastInput);
+  currencySymbol = $(this).val();
+  input = $(this).parent().parent().prev().children("input.amount");
+  $(input).attr("id", currencySymbol);
+  recalculate(lastInput);
 });
 
 $("#button-add").click(function(){
-	currencyRow = `
-	<div class="row currency-row">
-		<div class="col s5">
-			<input placeholder="Amount" id="" type="number" class="amount">
-		</div>
-		<div class="col s7 currency-cont">
-			<select class="currency-select">
-				<option value="none" disabled selected>Choose currency</option>
-			</select>
-		</div>
-	</div>`;
-	$("#currencies").append(currencyRow);
-	populateOptions(currencyArray, currencyNamesArray);
-	saveSettings();
+  currencyRow = `
+  <div class="row currency-row">
+    <div class="col s5">
+      <input placeholder="Amount" id="" type="number" class="amount">
+    </div>
+    <div class="col s7 currency-cont">
+      <select class="currency-select">
+        <option value="none" disabled selected>Choose currency</option>
+      </select>
+    </div>
+  </div>`;
+  $("#currencies").append(currencyRow);
+  populateOptions(currencyArray, currencyNamesArray);
+  saveSettings();
 });
 
 $("#button-remove").click(function(){
-	if($("#currencies .currency-row").length > 2){
-		$(".currency-row").last().remove();
-		saveSettings();
-		$("select").formSelect();
-	}
+  if($("#currencies .currency-row").length > 2){
+    $(".currency-row").last().remove();
+    saveSettings();
+    $("select").formSelect();
+  }
 });
 
 $("#currencies").on("keyup", "input.amount", function(){
@@ -142,26 +145,26 @@ $("#currencies").on("keyup", "input.amount", function(){
 });
 
 function recalculate(input){
-	amount = $(input).val();
-	currency = $(input).attr("id");
-	amountInputs = $("input.amount");
-	currenciesToConvert = [];
-	$(amountInputs).each(function(){
-		if ($(this).attr("id") != currency && $(this).attr("id") != ''){
-			currenciesToConvert.push($(this).attr("id"));
-		}
-	});
+  amount = $(input).val();
+  currency = $(input).attr("id");
+  amountInputs = $("input.amount");
+  currenciesToConvert = [];
+  $(amountInputs).each(function(){
+    if ($(this).attr("id") != currency && $(this).attr("id") != ''){
+      currenciesToConvert.push($(this).attr("id"));
+    }
+  });
 
   console.log(currenciesToConvert);
 
-	if(!isNaN(amount) && currency != '' && amountInputs.length > 1){ // input is a number
-		convertedAmounts = [];
-		currenciesToConvert.forEach(function(symbol){
-			convertCurrency(currency, symbol, amount);
-		});
-	}
-	lastInput = input;
-	saveSettings();
+  if(!isNaN(amount) && currency != '' && amountInputs.length > 1){ // input is a number
+    convertedAmounts = [];
+    currenciesToConvert.forEach(function(symbol){
+      convertCurrency(currency, symbol, amount);
+    });
+  }
+  lastInput = input;
+  saveSettings();
 }
 
 function convertCurrency(from, to, amount){
@@ -170,44 +173,43 @@ function convertCurrency(from, to, amount){
 }
 
 function setCurrencies(array){
-	amountInputs = $("input.amount");
-	if(amountInputs.length < array.length){
-		for(i = 0; i < (array.length + i - amountInputs.length); i++){
-			$("#button-add").trigger("click");
-		}
-	}else{
-		populateOptions(currencyArray, currencyNamesArray);
-	}
-	amountInputs = $("input.amount");
-	selects = $("select.currency-select");
-	for(i = 0; i < array.length; i++){
-		$(amountInputs[i]).attr("id", array[i]);
-		$(selects[i]).find("option[value='" + array[i] + "']").prop('selected', true);
-		console.log($(selects[i]).find("option[value='" + array[i] + "']").html());
-	}
-	$("select").formSelect();
+  amountInputs = $("input.amount");
+  if(amountInputs.length < array.length){
+    for(i = 0; i < (array.length + i - amountInputs.length); i++){
+      $("#button-add").trigger("click");
+    }
+  }else{
+    populateOptions(currencyArray, currencyNamesArray);
+  }
+  amountInputs = $("input.amount");
+  selects = $("select.currency-select");
+  for(i = 0; i < array.length; i++){
+    $(amountInputs[i]).attr("id", array[i]);
+    $(selects[i]).find("option[value='" + array[i] + "']").prop('selected', true);
+    console.log($(selects[i]).find("option[value='" + array[i] + "']").html());
+  }
+  $("select").formSelect();
 }
 
 function saveSettings(){
-	currencies = [];
-	amountInputs = $("input.amount");
-	$(amountInputs).each(function(){
-		if ($(this).attr("id") != ''){
-			currencies.push($(this).attr("id"));
-		}
-	});
-	if(currencies != null && currencies != ''){
-		browserObject.storage.local.set({"currencies" : currencies});
-	}
-	
+  currencies = [];
+  amountInputs = $("input.amount");
+  $(amountInputs).each(function(){
+    if ($(this).attr("id") != ''){
+      currencies.push($(this).attr("id"));
+    }
+  });
+  if(currencies != null && currencies != ''){
+    browserObject.storage.local.set({"currencies" : currencies});
+  }
 }
 
 $(".heading").click(function(){
-	if(!infoShown){
-		$(".info").slideDown(500);
-		infoShown = true;
-	}else{
-		$(".info").slideUp(500);
-		infoShown = false;
-	}
+  if(!infoShown){
+    $(".info").slideDown(500);
+    infoShown = true;
+  }else{
+    $(".info").slideUp(500);
+    infoShown = false;
+  }
 });
