@@ -1,51 +1,51 @@
 html,body{
-	width: 600px;
+    width: 600px;
 }
 
 a{
-	color: #f3e5f5;
+    color: #f3e5f5;
 }
 
 .heading{
-	text-align: center;
-	cursor: pointer;
+    text-align: center;
+    cursor: pointer;
 }
 
 .author{
-	color: #673ab7 ;
-	font-weight: bold;
+    color: #673ab7 ;
+    font-weight: bold;
 }
 
 .info{
-	display: none;
+    display: none;
 }
 
 .loading{
-	font-size: 3em;
-	text-align: center;
+    font-size: 3em;
+    text-align: center;
 }
 
 ul.select-dropdown{
-	min-height: 200px;
+    min-height: 200px;
 }
 
 ul.select-dropdown > li{
-	color: #512da8;
-	min-height: 25px;
+    color: #512da8;
+    min-height: 25px;
 }
 
 ul.select-dropdown > li > span{
-	color: #512da8;
-	font-size: 15px;
-	padding: 5px 10px;
+    color: #512da8;
+    font-size: 15px;
+    padding: 5px 10px;
 }
 
 input{
-	color: #512da8;
+    color: #512da8;
 }
 
 input.amount{
-	border-color: #512da8;
+    border-color: #512da8;
 }
 input.amount[type=number]:focus {
      border-bottom: 1px solid #512da8;
@@ -53,13 +53,29 @@ input.amount[type=number]:focus {
 }
 
 .button-row{
-	text-align: center;
+    text-align: center;
 }
 
 .button-row > div > .btn{
-	width: 100%;
+    width: 100%;
 }
 
 .currency-row{
-	margin-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.row.settings-button > div{
+    text-align: center;
+}
+
+#button-settings {
+    width: 50%;
+}
+
+#settings {
+    display: none;
+}
+
+.setting-button-cont {
+    margin-top: 12px;
 }

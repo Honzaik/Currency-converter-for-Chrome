@@ -1,12 +1,12 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
 
   "name": "Currency converter by Honzaik",
   "short_name" : "Currency converter",
   "description": "You can easily convert any currency via this extension.",
   "version": "1.4",
 
-  "action": {
+  "browser_action": {
     "default_icon": {
       "19": "icon19.png",
       "38": "icon38.png"
@@ -19,10 +19,8 @@
     "128": "icon128.png" 
   },
   "permissions": [
-    "activeTab",
-    "storage"
-  ],
-  "host_permissions": [
-    "https://floatrates.com/daily/usd.json"
-  ]
+   "activeTab",
+   "https://floatrates.com/daily/usd.json",
+   "storage"
+   ]
 }
